@@ -32,7 +32,7 @@ def chat():
         system_prompt = {
             "role": "system",
             "content": (
-                "Kamu adalah Aether AI, asisten virtual pintar yang membantu pengguna dengan jawaban yang jelas, singkat, modern, dan profesional."
+                "Kamu adalah Animous AI, asisten virtual pintar yang membantu pengguna dengan jawaban yang jelas, singkat, modern, dan profesional."
             )
         }
 
@@ -155,7 +155,7 @@ def upload_file():
             messages=[
                 {
                     "role": "system",
-                    "content": "Kamu adalah Aether AI, asisten yang membantu membaca dan merangkum dokumen."
+                    "content": "Kamu adalah Animous AI, asisten yang membantu membaca dan merangkum dokumen."
                 },
                 {
                     "role": "user",

@@ -8,13 +8,13 @@ let chats = [
 let activeChatIndex = 0;
 
 function saveChats() {
-    localStorage.setItem("aether_chats", JSON.stringify(chats));
-    localStorage.setItem("aether_active_chat", activeChatIndex);
+    localStorage.setItem("animous_chats", JSON.stringify(chats));
+    localStorage.setItem("animous_active_chat", activeChatIndex);
 }
 
 function loadChats() {
-    const savedChats = localStorage.getItem("aether_chats");
-    const savedActiveChat = localStorage.getItem("aether_active_chat");
+    const savedChats = localStorage.getItem("animous_chats");
+    const savedActiveChat = localStorage.getItem("animous_active_chat");
 
     if (savedChats) {
         chats = JSON.parse(savedChats);
@@ -83,7 +83,7 @@ async function sendMessage() {
     loading.innerHTML = `
     <div class="loader-wrapper">
         <span class="loader"></span>
-        <span>Aether sedang berpikir...</span>
+        <span>Animous sedang berpikir...</span>
     </div>
     `;
 
@@ -274,7 +274,7 @@ function renderActiveChat() {
 
     chatBox.innerHTML = `
         <div class="message ai">
-            Halo! Saya Aether AI 🚀 Siap membantu pertanyaan kamu.
+            Halo! Saya Animous AI 🚀 Siap membantu pertanyaan kamu.
         </div>
     `;
 
@@ -308,8 +308,8 @@ renderActiveChat();
 
 function clearAllChats() {
 
-    localStorage.removeItem("aether_chats");
-    localStorage.removeItem("aether_active_chat");
+    localStorage.removeItem("animous_chats");
+    localStorage.removeItem("animous_active_chat");
 
     chats = [
         {
