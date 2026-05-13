@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>AI Chatbot</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+<div class="app-layout">
+
+    <div class="sidebar">
+
+        <div class="sidebar-header">
+        <button id="new-chat-btn"
+        onclick="createNewChat()">
+        ➕ New Chat
+        </button>
+
+        <button id="clear-chat-btn"
+        onclick="clearAllChats()">
+        🗑 Clear History
+        </button>
+        </div>
+
+        <div id="chat-history" class="chat-history">
+            <div class="history-item active">
+                Chat Baru
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container">
+
+        <div class="chat-header">
+            <h1>Aether AI</h1>
+        </div>
+
+        <div id="chat-box" class="chat-box">
+
+            <div class="message ai">
+                Halo! Saya Aether AI 🚀
+                Siap membantu pertanyaan kamu.
+            </div>
+
+            <p class="subtitle">
+            Smart AI Chat Experience
+            </p>
+
+        </div>
+
+        <div class="input-area">
+
+       <div class="input-wrapper">
+
+        <button id="upload-btn" onclick="document.getElementById('file-input').click()">
+            +
+        </button>
+
+        <input
+            type="file"
+            id="file-input"
+            accept="image/*,.txt,.pdf"
+            hidden
+            onchange="handleFileUpload(event)"
+        >
+
+        <textarea
+        id="message"
+        placeholder="Minta Aether..."
+        rows="1"
+        ></textarea>
+
+        <button id="voice-btn" onclick="startVoiceInput()">
+            🎤
+        </button>
+
+        <button id="send-btn" onclick="sendMessage()">
+            ➜
+        </button>
+
+    </div>
+
+    </div>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static',
+filename='script.js') }}"></script>
+
+</body>
+</html>
