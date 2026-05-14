@@ -98,19 +98,33 @@ This project was created as an AI engineering and fullstack portfolio project.
 ## 📂 Project Structure
 
 animous-ai/
+
 │
+
 ├── app.py
+
 ├── requirements.txt
+
 ├── .env.example
+
 ├── README.md
+
 │
+
 ├── static/
+
 │   ├── style.css
+
 │   └── script.js
+
 │
+
 ├── templates/
+
 │   └── index.html
+
 │
+
 └── venv/
 
 ## ⚙️ Installation
