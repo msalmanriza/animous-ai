@@ -144,12 +144,14 @@ animous-ai/
 4. Activate Virtual Environment
    
    • Windows
+   
    venv\Scripts\activate
 
    • Mac/Linux
+   
    source venv/bin/activate
 
-5. Install Dependencies
+6. Install Dependencies
    
    pip install -r requirements.txt
 
