@@ -96,6 +96,7 @@ This project was created as an AI engineering and fullstack portfolio project.
 • VSCode
 
 ## 📂 Project Structure
+
 animous-ai/
 │
 ├── app.py
