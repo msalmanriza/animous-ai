@@ -25,6 +25,31 @@ function loadChats() {
     }
 }
 
+function createChatTitle(text) {
+    let cleanText = text
+        .replace("File dipilih:", "")
+        .replace(/[^\w\s]/gi, "")
+        .trim();
+
+    const words = cleanText.split(" ").filter(Boolean);
+
+    const shortWords = words.slice(0, 4);
+
+    let title = shortWords.join(" ");
+
+    title = title
+        .toLowerCase()
+        .replace(/\b\w/g, function(char) {
+            return char.toUpperCase();
+        });
+
+    if (!title) {
+        title = "Chat Baru";
+    }
+
+    return title;
+}
+
 async function sendMessage() {
     const input = document.getElementById("message");
     const button = document.getElementById("send-btn");
@@ -62,10 +87,7 @@ async function sendMessage() {
 
     // Jadikan pesan pertama sebagai judul sidebar
     if (chats[activeChatIndex].messages.length === 1) {
-        chats[activeChatIndex].title =
-            message.length > 28
-            ? message.substring(0, 28) + "..."
-            : message;
+       chats[activeChatIndex].title = createChatTitle(message);
 
         renderChatHistory();
     }
@@ -79,12 +101,11 @@ async function sendMessage() {
 
     // Loading bubble AI
     const loading = document.createElement("div");
-    loading.className = "message ai loading";
+    loading.className = "message ai ai-thinking";
     loading.innerHTML = `
-    <div class="loader-wrapper">
-        <span class="loader"></span>
-        <span>Animous sedang berpikir...</span>
-    </div>
+        <span class="thinking-dot"></span>
+        <span class="thinking-dot"></span>
+        <span class="thinking-dot"></span>
     `;
 
     chatBox.appendChild(loading);
@@ -124,12 +145,28 @@ async function sendMessage() {
         // Hapus loading
         loading.remove();
 
+        async function typeMessage(text, element) {
+        element.innerHTML = "";
+
+        let i = 0;
+
+        while (i < text.length) {
+            element.innerHTML += text.charAt(i);
+
+            i++;
+
+            await new Promise(resolve => setTimeout(resolve, 10));
+        }
+    }
         // Bubble AI
         const aiMessage = document.createElement("div");
         aiMessage.className = "message ai";
-        aiMessage.innerHTML = marked.parse(data.response);
 
         chatBox.appendChild(aiMessage);
+
+        await typeMessage(data.response, aiMessage);
+
+        aiMessage.innerHTML = marked.parse(data.response);
 
         // Simpan jawaban AI ke chat aktif
         chats[activeChatIndex].messages.push({
@@ -241,12 +278,14 @@ function createNewChat() {
 }
 
 function renderChatHistory() {
+
     const history =
         document.getElementById("chat-history");
 
     history.innerHTML = "";
 
     chats.forEach(function(chat, index) {
+
         const item =
             document.createElement("div");
 
@@ -255,14 +294,68 @@ function renderChatHistory() {
             ? "history-item active"
             : "history-item";
 
-        item.innerText = chat.title;
+        // CONTENT TITLE
+        const content =
+            document.createElement("div");
 
+        content.className = "history-content";
+
+        content.innerText =
+            chat.title || "Chat Baru";
+
+        // DELETE BUTTON
+        const deleteBtn =
+            document.createElement("button");
+
+        deleteBtn.className =
+            "delete-chat-btn";
+
+        deleteBtn.innerHTML = "✕";
+
+        // DELETE CHAT
+        deleteBtn.onclick = function(e) {
+
+            e.stopPropagation();
+
+            chats.splice(index, 1);
+
+            if (chats.length === 0) {
+
+                chats.push({
+                    title: "Chat Baru",
+                    messages: []
+                });
+
+                activeChatIndex = 0;
+
+            } else {
+
+                activeChatIndex =
+                    Math.max(0, index - 1);
+            }
+
+            saveChats();
+
+            renderChatHistory();
+
+            renderActiveChat();
+        };
+
+        // CLICK CHAT
         item.onclick = function() {
-        activeChatIndex = index;
-        saveChats();
-        renderChatHistory();
-        renderActiveChat();
-    };
+
+            activeChatIndex = index;
+
+            saveChats();
+
+            renderChatHistory();
+
+            renderActiveChat();
+        };
+
+        item.appendChild(content);
+
+        item.appendChild(deleteBtn);
 
         history.appendChild(item);
     });
@@ -351,3 +444,30 @@ function handleFileUpload(event) {
 
     input.value = `File dipilih: ${selectedFile.name}`;
 }
+
+const themeToggle = document.getElementById("theme-toggle");
+
+// cek localStorage
+if (localStorage.getItem("theme") === "light") {
+    document.body.classList.add("light-mode");
+    themeToggle.innerText = "☀️";
+}
+
+themeToggle.addEventListener("click", () => {
+
+    document.body.classList.toggle("light-mode");
+
+    // simpan tema
+    if (document.body.classList.contains("light-mode")) {
+
+        localStorage.setItem("theme", "light");
+
+        themeToggle.innerText = "☀️";
+
+    } else {
+
+        localStorage.setItem("theme", "dark");
+
+        themeToggle.innerText = "🌙";
+    }
+});
