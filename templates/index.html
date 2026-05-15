@@ -8,6 +8,8 @@
     <link rel="stylesheet"
     href="{{ url_for('static', filename='style.css') }}">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
@@ -27,6 +29,24 @@
         🗑 Clear History
         </button>
         </div>
+
+        <div class="export-dropdown">
+
+    <button id="export-chat-btn" onclick="toggleExportMenu()">
+        ⬇ Export Chat
+        </button>
+
+        <div id="export-menu" class="export-menu">
+            <button onclick="exportChat()">
+                TXT
+            </button>
+
+            <button onclick="exportChatPDF()">
+                PDF
+            </button>
+        </div>
+
+    </div>
 
         <div id="chat-history" class="chat-history">
             <div class="history-item active">

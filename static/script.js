@@ -471,3 +471,131 @@ themeToggle.addEventListener("click", () => {
         themeToggle.innerText = "🌙";
     }
 });
+
+function exportChat() {
+    const activeChat = chats[activeChatIndex];
+
+    if (!activeChat || activeChat.messages.length === 0) {
+        alert("Chat masih kosong, belum ada yang bisa diexport.");
+        return;
+    }
+
+    let content = `Animous AI - Export Chat\n`;
+    content += `Judul: ${activeChat.title}\n`;
+    content += `Tanggal: ${new Date().toLocaleString()}\n`;
+    content += `\n============================\n\n`;
+
+    activeChat.messages.forEach(function(msg) {
+        const sender =
+            msg.role === "user"
+            ? "User"
+            : "Animous AI";
+
+        content += `${sender}:\n${msg.content}\n\n`;
+    });
+
+    const blob = new Blob([content], {
+        type: "text/plain"
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${activeChat.title || "animous-chat"}.txt`;
+
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+function exportChatPDF() {
+    const activeChat = chats[activeChatIndex];
+
+    if (!activeChat || activeChat.messages.length === 0) {
+        alert("Chat masih kosong, belum ada yang bisa diexport.");
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+
+    const margin = 20;
+    const maxWidth = pageWidth - margin * 2;
+
+    let y = 20;
+
+    doc.setFontSize(18);
+    doc.text("Animous AI - Export Chat", margin, y);
+
+    y += 10;
+
+    doc.setFontSize(11);
+    doc.text(`Judul: ${activeChat.title}`, margin, y);
+
+    y += 7;
+
+    doc.text(`Tanggal: ${new Date().toLocaleString()}`, margin, y);
+
+    y += 12;
+
+    doc.setDrawColor(180);
+    doc.line(margin, y, pageWidth - margin, y);
+
+    y += 12;
+
+    activeChat.messages.forEach(function(msg) {
+        const sender = msg.role === "user" ? "User" : "Animous AI";
+
+        doc.setFontSize(12);
+        doc.setFont(undefined, "bold");
+
+        const senderLines = doc.splitTextToSize(`${sender}:`, maxWidth);
+
+        if (y > pageHeight - 25) {
+            doc.addPage();
+            y = 20;
+        }
+
+        doc.text(senderLines, margin, y);
+        y += senderLines.length * 7;
+
+        doc.setFont(undefined, "normal");
+
+        const cleanContent = msg.content
+            .replace(/[#*_`>-]/g, "")
+            .replace(/\n{3,}/g, "\n\n");
+
+        const messageLines = doc.splitTextToSize(cleanContent, maxWidth);
+
+        messageLines.forEach(function(line) {
+            if (y > pageHeight - 20) {
+                doc.addPage();
+                y = 20;
+            }
+
+            doc.text(line, margin, y);
+            y += 7;
+        });
+
+        y += 8;
+    });
+
+    const fileName =
+        (activeChat.title || "animous-chat")
+            .replace(/[^\w\s-]/g, "")
+            .replace(/\s+/g, "-")
+            .toLowerCase();
+
+    doc.save(`${fileName}.pdf`);
+}
+
+function toggleExportMenu() {
+    const menu = document.getElementById("export-menu");
+    menu.classList.toggle("show");
+}

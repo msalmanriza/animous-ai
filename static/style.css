@@ -98,7 +98,7 @@ body {
 }
 
 .history-item:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 
     background: rgba(255,255,255,0.12);
 
@@ -756,4 +756,60 @@ body.light-mode .delete-chat-btn {
 
 body.light-mode .delete-chat-btn:hover {
     color: #ef4444;
+}
+
+#export-chat-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 999px;
+    background: #22c55e;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+#export-chat-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+#export-chat-btn {
+    margin-bottom: 18px;
+}
+
+.chat-history {
+    margin-top: 6px;
+}
+
+.export-dropdown {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.export-menu {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.export-menu.show {
+    display: flex;
+}
+
+.export-menu button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    font-size: 14px;
+}
+
+body.light-mode .export-menu button {
+    background: #f1f3f4;
+    color: #202124;
 }
