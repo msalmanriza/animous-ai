@@ -46,8 +46,14 @@
             </button>
         </div>
 
-    </div>
+        <div class="sidebar-search">
+        <input
+            type="text"
+            id="search-chat"
+            placeholder="Cari chat...">
+        </div>
 
+    </div>
         <div id="chat-history" class="chat-history">
             <div class="history-item active">
                 Chat Baru
@@ -56,7 +62,13 @@
 
     </div>
 
+    <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
     <div class="container">
+
+        <button id="mobile-menu-btn" onclick="toggleSidebar()">
+        ☰
+        </button>
 
         <div class="chat-header">
             <h1>Animous AI</h1>
@@ -75,6 +87,8 @@
             </p>
 
         </div>
+
+        <div id="voice-status" class="voice-status"></div>
 
         <div class="input-area">
 
@@ -104,6 +118,10 @@
 
         <button id="send-btn" onclick="sendMessage()">
             ➜
+        </button>
+       
+        <button id="stop-btn" style="display:none;">
+        Stop
         </button>
 
     </div>

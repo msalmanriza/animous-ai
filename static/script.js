@@ -5,7 +5,11 @@ let chats = [
     }
 ];
 
+let controller = null;
+let isGenerating = false;
+
 let activeChatIndex = 0;
+let stopTyping = false;
 
 function saveChats() {
     localStorage.setItem("animous_chats", JSON.stringify(chats));
@@ -50,12 +54,26 @@ function createChatTitle(text) {
     return title;
 }
 
+function formatFileSize(bytes) {
+    if (bytes < 1024) {
+        return bytes + " B";
+    }
+
+    if (bytes < 1024 * 1024) {
+        return (bytes / 1024).toFixed(1) + " KB";
+    }
+
+    return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+}
+
 async function sendMessage() {
     const input = document.getElementById("message");
     const button = document.getElementById("send-btn");
+    const stopBtn = document.getElementById("stop-btn");
     const chatBox = document.getElementById("chat-box");
 
     const message = input.value.trim();
+    input.style.height = "auto";
 
     if (!message) return;
 
@@ -63,7 +81,10 @@ async function sendMessage() {
     const userMessage = document.createElement("div");
     userMessage.className = "message user";
 
-    if (selectedFile && selectedFile.type.startsWith("image/")) {
+    if (selectedFile) {
+    const fileSize = formatFileSize(selectedFile.size);
+
+    if (selectedFile.type.startsWith("image/")) {
         const imageUrl = URL.createObjectURL(selectedFile);
 
         userMessage.innerHTML = `
@@ -73,8 +94,27 @@ async function sendMessage() {
             <div>${message}</div>
         `;
     } else {
-        userMessage.innerText = message;
+        const fileIcon =
+            selectedFile.name.toLowerCase().endsWith(".pdf")
+            ? "📄"
+            : "📝";
+
+        userMessage.innerHTML = `
+            <div class="file-preview-card">
+                <div class="file-preview-icon">${fileIcon}</div>
+
+                <div class="file-preview-info">
+                    <strong>${selectedFile.name}</strong>
+                    <span>${fileSize}</span>
+                </div>
+            </div>
+
+            <div>${message}</div>
+        `;
     }
+} else {
+    userMessage.innerText = message;
+}
 
     chatBox.appendChild(userMessage);
 
@@ -110,6 +150,13 @@ async function sendMessage() {
 
     chatBox.appendChild(loading);
 
+    controller = new AbortController();
+    isGenerating = true;
+    stopTyping = false;
+
+    stopBtn.style.display = "block";
+    button.style.display = "none";
+
     // Auto scroll bawah
     chatBox.scrollTop = chatBox.scrollHeight;
 
@@ -122,6 +169,7 @@ async function sendMessage() {
         formData.append("message", message);
 
         response = await fetch("/upload", {
+        signal: controller.signal,
             method: "POST",
             body: formData
         });
@@ -130,6 +178,7 @@ async function sendMessage() {
         document.getElementById("file-input").value = "";
     } else {
         response = await fetch("/chat", {
+        signal: controller.signal,
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -151,8 +200,11 @@ async function sendMessage() {
         let i = 0;
 
         while (i < text.length) {
-            element.innerHTML += text.charAt(i);
+            if (stopTyping) {
+                break;
+            }
 
+            element.innerHTML += text.charAt(i);
             i++;
 
             await new Promise(resolve => setTimeout(resolve, 10));
@@ -187,6 +239,11 @@ async function sendMessage() {
 
         console.error(error);
     }
+
+    isGenerating = false;
+
+    stopBtn.style.display = "none";
+    button.style.display = "flex";
 
     // Aktifkan lagi input
     input.disabled = false;
@@ -226,13 +283,19 @@ messageInput.addEventListener(
 function startVoiceInput() {
     const input = document.getElementById("message");
     const voiceBtn = document.getElementById("voice-btn");
+    const voiceStatus = document.getElementById("voice-status");
 
     const SpeechRecognition =
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-        alert("Browser kamu belum mendukung voice input.");
+        voiceStatus.innerText =
+            "Browser kamu belum mendukung voice input.";
+
+        voiceStatus.className =
+            "voice-status show error";
+
         return;
     }
 
@@ -245,6 +308,9 @@ function startVoiceInput() {
     voiceBtn.classList.add("listening");
     voiceBtn.innerText = "🎙️";
 
+    voiceStatus.innerText = "Mendengarkan...";
+    voiceStatus.className = "voice-status show";
+
     recognition.start();
 
     recognition.onresult = function(event) {
@@ -253,15 +319,27 @@ function startVoiceInput() {
 
         input.value = transcript;
         input.focus();
+
+        voiceStatus.innerText = "Suara berhasil dikenali.";
+        voiceStatus.className = "voice-status show";
     };
 
     recognition.onerror = function() {
-        alert("Voice input gagal. Coba izinkan akses microphone.");
+        voiceStatus.innerText =
+            "Voice input gagal. Izinkan akses microphone.";
+
+        voiceStatus.className =
+            "voice-status show error";
     };
 
     recognition.onend = function() {
         voiceBtn.classList.remove("listening");
         voiceBtn.innerText = "🎤";
+
+        setTimeout(function() {
+            voiceStatus.className = "voice-status";
+            voiceStatus.innerText = "";
+        }, 1800);
     };
 }
 
@@ -282,9 +360,26 @@ function renderChatHistory() {
     const history =
         document.getElementById("chat-history");
 
+    const searchInput =
+        document.getElementById("search-chat");
+
+    const keyword = searchInput
+        ? searchInput.value.toLowerCase()
+        : "";
+
     history.innerHTML = "";
 
     chats.forEach(function(chat, index) {
+
+        const chatTitle =
+            chat.title || "Chat Baru";
+
+        if (
+            keyword &&
+            !chatTitle.toLowerCase().includes(keyword)
+        ) {
+            return;
+        }
 
         const item =
             document.createElement("div");
@@ -294,16 +389,13 @@ function renderChatHistory() {
             ? "history-item active"
             : "history-item";
 
-        // CONTENT TITLE
         const content =
             document.createElement("div");
 
         content.className = "history-content";
 
-        content.innerText =
-            chat.title || "Chat Baru";
+        content.innerText = chatTitle;
 
-        // DELETE BUTTON
         const deleteBtn =
             document.createElement("button");
 
@@ -312,7 +404,6 @@ function renderChatHistory() {
 
         deleteBtn.innerHTML = "✕";
 
-        // DELETE CHAT
         deleteBtn.onclick = function(e) {
 
             e.stopPropagation();
@@ -341,7 +432,6 @@ function renderChatHistory() {
             renderActiveChat();
         };
 
-        // CLICK CHAT
         item.onclick = function() {
 
             activeChatIndex = index;
@@ -365,11 +455,36 @@ function renderActiveChat() {
     const chatBox =
         document.getElementById("chat-box");
 
+    if (chats[activeChatIndex].messages.length === 0) {
+
     chatBox.innerHTML = `
-        <div class="message ai">
-            Halo! Saya Animous AI 🚀 Siap membantu pertanyaan kamu.
+        <div class="empty-state">
+            <h2>✨ Welcome to Animous AI</h2>
+
+            <p>
+                Modern AI assistant for chat, understanding documents, analyzing images, and helping you get work done faster.
+            </p>
+
+            <div class="empty-suggestions">
+
+                <button onclick="quickPrompt('Jelaskan AI secara sederhana')">
+                    🤖 Explain AI
+                </button>
+
+                <button onclick="quickPrompt('Buat roadmap belajar frontend developer')">
+                    💻 Learn Frontend
+                </button>
+
+                <button onclick="quickPrompt('Ringkas isi dokumen ini')">
+                    📄 Document Summary
+                </button>
+
+            </div>
         </div>
     `;
+
+    return;
+}
 
     chats[activeChatIndex].messages.forEach(function(msg) {
         const bubble =
@@ -598,4 +713,59 @@ function exportChatPDF() {
 function toggleExportMenu() {
     const menu = document.getElementById("export-menu");
     menu.classList.toggle("show");
+}
+
+const stopButton = document.getElementById("stop-btn");
+const sendButton = document.getElementById("send-btn");
+
+stopButton.onclick = function () {
+    stopTyping = true;
+
+    if (controller) {
+        controller.abort();
+    }
+
+    isGenerating = false;
+
+    stopButton.style.display = "none";
+    sendButton.style.display = "flex";
+};
+
+const searchChatInput =
+    document.getElementById("search-chat");
+
+if (searchChatInput) {
+    searchChatInput.addEventListener("input", function() {
+        renderChatHistory();
+    });
+}
+
+const autoResizeInput =
+    document.getElementById("message");
+
+if (autoResizeInput) {
+    autoResizeInput.addEventListener("input", function() {
+        this.style.height = "auto";
+        this.style.height = Math.min(this.scrollHeight, 140) + "px";
+    });
+}
+
+function quickPrompt(text) {
+
+    const input =
+        document.getElementById("message");
+
+    input.value = text;
+
+    input.focus();
+}
+
+function toggleSidebar() {
+    document.querySelector(".sidebar").classList.toggle("show");
+    document.getElementById("sidebar-overlay").classList.toggle("show");
+}
+
+function closeSidebar() {
+    document.querySelector(".sidebar").classList.remove("show");
+    document.getElementById("sidebar-overlay").classList.remove("show");
 }
