@@ -1,91 +1,50 @@
 # Animous AI
+
 Modern AI chatbot inspired by Gemini, built using Flask, JavaScript, and Groq API.
 
-## 🚀Overview
+## 🚀 Overview
 
-### Animous AI is a modern multimodal AI chatbot web application that supports:
+Animous AI is a modern multimodal AI chatbot web application built as an AI engineering and fullstack portfolio project.
 
-• Real-time AI conversation
+## ✨ Features
 
-• AI image analysis (Vision AI)
+✅Real-time AI conversation
 
-• PDF and TXT document reader
+✅AI image analysis (Vision AI)
 
-• Voice input
+✅PDF and TXT document reader
 
-• Chat history memory
+✅Voice input
 
-• Responsive mobile UI
+✅Chat history memory with localStorage
 
-• Markdown response rendering
+✅Sidebar chat history
 
-• Local chat persistence using localStorage
+✅Markdown response rendering
 
-This project was created as an AI engineering and fullstack portfolio project.
+✅Dark / Light mode
 
-## ✨Fitur
+✅AI typing animation
 
-### AI Chat Assistant
+✅Stop generating response
 
-• Real-time AI conversation
+✅Chat search in sidebar
 
-• Smart and concise responses
+✅Delete individual chat
 
-• Markdown rendering support
+✅Export chat to TXT and PDF
 
-### AI Vision
+✅File preview for PDF, TXT, and images
 
-• Upload JPG / PNG / WEBP images
+✅Auto-resize textarea
 
-• AI can describe and analyze images
+✅Empty state landing UI
 
-### Document Reader
+✅Mobile sidebar collapse
 
-• Upload PDF and TXT files
+✅Responsive mobile UI
 
-• AI summarizes and explains document contents
-
-### Voice Input
-
-• Speech-to-text input using browser microphone
-
-### Chat Memory
-
-• Multiple chat sessions
-
-• Sidebar chat history
-
-• LocalStorage persistence
-
-### Responsive UI
-
-• Mobile-friendly layout
-
-• Gemini-inspired modern interface
-
-### Additional features
-
-• Dark / Light mode
-
-• AI typing animation
-
-• Stop generating response
-
-• Chat search in sidebar
-
-• Delete individual chat
-
-• Export chat to TXT and PDF
-
-• File preview for PDF, TXT, and images
-
-• Auto-resize textarea
-
-• Empty state landing UI
-
-• Mobile sidebar collapse
-
-• Smooth voice input status
+✅Smooth voice input status
 
 ## 🛠 Tech Stack
 
@@ -154,43 +113,56 @@ animous-ai/
 ## ⚙️ Installation
 
 1. Clone Repository
-   
+```bash
    git clone https://github.com/msalmanriza/animous-ai.git
+```
 
-2. Open Project
+1. Open Project
    
    cd animous-ai
 
-3. Create Virtual Environment
-   
+2. Create Virtual Environment
+  ```bash 
    python -m venv venv
+   ```
 
-4. Activate Virtual Environment
+3. Activate Virtual Environment
    
    • Windows
-   
+   ```bash 
    venv\Scripts\activate
+   ```
 
    • Mac/Linux
-   
+   ```bash 
    source venv/bin/activate
+   ```
 
 6. Install Dependencies
-   
+   ```bash 
    pip install -r requirements.txt
+   ```
 
 ## 🔑 Environment Variables
 • Create a .env file in the root directory.
+```bash 
   GROQ_API_KEY=your_groq_api_key_here
+```
 
 • You can get your Groq API key from:
+```bash 
   https://console.groq.com
+```
 
 ## ▶️ Run The Project
+```bash 
 python app.py
+```
 
 Open your browser:
+```bash 
 http://127.0.0.1:5000
+```
 
 <img width="1919" height="907" alt="image" src="https://github.com/user-attachments/assets/cd7139be-1424-4e9a-a96c-f68bede87ec5" />
 <img width="1919" height="906" alt="image" src="https://github.com/user-attachments/assets/68e2f68a-f65b-4fd2-a7c7-c6b096387af7" />
