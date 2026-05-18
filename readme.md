@@ -63,6 +63,30 @@ This project was created as an AI engineering and fullstack portfolio project.
 
 • Gemini-inspired modern interface
 
+### Additional features
+
+• Dark / Light mode
+
+• AI typing animation
+
+• Stop generating response
+
+• Chat search in sidebar
+
+• Delete individual chat
+
+• Export chat to TXT and PDF
+
+• File preview for PDF, TXT, and images
+
+• Auto-resize textarea
+
+• Empty state landing UI
+
+• Mobile sidebar collapse
+
+• Smooth voice input status
+
 ## 🛠 Tech Stack
 
 ### Frontend
@@ -173,25 +197,35 @@ http://127.0.0.1:5000
 <img width="1919" height="910" alt="image" src="https://github.com/user-attachments/assets/74099f0a-a527-4c8e-8934-afdf7e6ce8b2" />
 <img width="467" height="800" alt="image" src="https://github.com/user-attachments/assets/cdc46b16-4a44-45f6-82ce-77b2f3ae1850" />
 
+### Dark Mode
+<img width="1917" height="916" alt="dark-mode" src="https://github.com/user-attachments/assets/3c6e9692-1d7b-48b4-a111-d57e22af633d" />
+
+### Light Mode
+<img width="1919" height="907" alt="light-mode" src="https://github.com/user-attachments/assets/caee67ba-d3f3-4554-91f4-fdc7619df6e4" />
+
+### Upload Preview
+<img width="1919" height="911" alt="upload pdf view" src="https://github.com/user-attachments/assets/df6513dc-dd51-454b-8e47-64f54acc7d17" />
+
+### Mobile View
+<img width="468" height="802" alt="mobile view" src="https://github.com/user-attachments/assets/bb80f554-6621-4dcb-b8c4-f9265fae2990" />
+
+
+
 ## 🧠 Future Improvements
 
 ### Planned future features:
 
-• Streaming AI responses
+• Real streaming AI responses
 
 • User authentication
 
 • Cloud database memory
 
-• Dark/Light mode
+• Custom domain deployment
 
-• AI typing animation
+• Usage limit per user
 
-• Online deployment
-
-• Custom domain support
-
-• User accounts
+• Admin dashboard
 
 ## 📌 Notes
 
