@@ -171,7 +171,7 @@ http://127.0.0.1:5000
 <img width="1919" height="907" alt="light-mode" src="https://github.com/user-attachments/assets/caee67ba-d3f3-4554-91f4-fdc7619df6e4" />
 
 ### Upload Preview
-<img width="1919" height="911" alt="upload pdf view" src="https://github.com/user-attachments/assets/df6513dc-dd51-454b-8e47-64f54acc7d17" />
+<img width="1919" height="909" alt="upload view" src="https://github.com/user-attachments/assets/9f4b0a80-1468-497d-9ea0-6e64609b5490" />
 
 ### Mobile View
 <img width="468" height="802" alt="mobile view" src="https://github.com/user-attachments/assets/bb80f554-6621-4dcb-b8c4-f9265fae2990" />
@@ -207,8 +207,9 @@ http://127.0.0.1:5000
 ### Developed by:
 
 M Salman Riza
-
+```bash 
 GitHub: https://github.com/msalmanriza
+```
 
 ## ⭐ Support
 
