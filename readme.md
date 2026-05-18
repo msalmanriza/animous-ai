@@ -164,11 +164,6 @@ Open your browser:
 http://127.0.0.1:5000
 ```
 
-<img width="1919" height="907" alt="image" src="https://github.com/user-attachments/assets/cd7139be-1424-4e9a-a96c-f68bede87ec5" />
-<img width="1919" height="906" alt="image" src="https://github.com/user-attachments/assets/68e2f68a-f65b-4fd2-a7c7-c6b096387af7" />
-<img width="1919" height="910" alt="image" src="https://github.com/user-attachments/assets/74099f0a-a527-4c8e-8934-afdf7e6ce8b2" />
-<img width="467" height="800" alt="image" src="https://github.com/user-attachments/assets/cdc46b16-4a44-45f6-82ce-77b2f3ae1850" />
-
 ### Dark Mode
 <img width="1917" height="916" alt="dark-mode" src="https://github.com/user-attachments/assets/3c6e9692-1d7b-48b4-a111-d57e22af633d" />
 
